@@ -1,0 +1,55 @@
+# nginx proxy address - http://172.17.0.1:8090
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "5m"
+    max-file: "1"
+
+services:
+  freescout:
+    image: tiredofit/freescout:latest
+    container_name: freescout-app
+    restart: unless-stopped
+    logging: *default-logging
+    networks:
+      - freescout
+    ports:
+      - "8090:80"
+    environment:
+      TZ: ${TZ:-America/New_York}
+    volumes:
+      - ./rootfs/data/freescout:/data
+      - ./rootfs/config/freescout:/config
+    depends_on:
+      - freescout-db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  freescout-db:
+    image: mariadb:11
+    container_name: freescout-db
+    restart: unless-stopped
+    logging: *default-logging
+    networks:
+      - freescout
+    environment:
+      TZ: ${TZ:-America/New_York}
+      MARIADB_DATABASE: ${DB_CREATE_DATABASE_NAME:-freescout}
+      MARIADB_USER: ${DB_USER_NAME:-freescout}
+      MARIADB_PASSWORD: ${DB_USER_PASS:-changeme_db_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ADMIN_PASS:-changeme_root_password}
+    volumes:
+      - ./rootfs/db/mariadb/freescout:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  freescout:
+    external: false
