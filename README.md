@@ -50,9 +50,9 @@ See `docker-compose.yaml` for complete list of configurable options.
 
 ## 📂 Volumes
 
-- `./rootfs/data/freescout` - Data storage
-- `./rootfs/config/freescout` - Data storage
-- `./rootfs/data/db/mariadb/freescout` - Data storage
+- `./volumes/data/freescout` - Data storage
+- `./volumes/config/freescout` - Data storage
+- `./volumes/data/db/mariadb/freescout` - Data storage
 
 ## 🔐 Security
 
