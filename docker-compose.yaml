@@ -30,7 +30,7 @@ services:
       DB_PASS: ${DB_USER_PASS:-changeme_db_password}
       ADMIN_EMAIL: ${APP_ADMIN_USER:-admin@example.com}
       ADMIN_PASS: ${APP_ADMIN_PASS:-changeme_admin_password}
-      APP_NAME: ${APP_ORG_NAME:-FreeScout}
+      APPLICATION_NAME: ${APP_ORG_NAME:-FreeScout}
       APP_ENV: production
       APP_KEY: ${APP_SECRET_KEY:-changeme_secret_key_min_32_chars}
       APP_URL: http://${BASE_HOST_NAME:-$HOSTNAME}
